@@ -29,3 +29,27 @@ mul_sum = sum([(int(mul[0]) * int(mul[1])) for mul in mul_instructions])
 
 print("--- Part One ---")
 print(f"Sum of multiplications : {mul_sum}.\n")
+
+# --- Par Two ---
+
+pattern = r"don't\(\)|do\(\)|mul\(\d+,\d+\)"
+
+matches = re.findall(pattern, instructions)
+
+do = True
+mul_do_instructions = ""
+for match in matches:
+    if match == "do()":
+        do = True
+    elif match == "don't()":
+        do = False
+
+    if do and "mul" in match:
+        mul_do_instructions += match
+    
+m2 = find_mul(mul_do_instructions)
+print(m2)
+mul_sum2 = sum([(int(mul[0]) * int(mul[1])) for mul in m2])
+
+print("--- Part Two ---")
+print(f"Sum of do multiplications : {mul_sum2}.\n")
