@@ -13,43 +13,58 @@ instructions = str(lines)
 
 # --- Part One ---
 
-def find_mul(instructions: str) -> list[tuple]:
 
-    # Set pattern for regex to extract mul(X,Y) instructions
+def calculate_mul_sum(instructions: str) -> int:
+    # Set pattern to look for : "mul(X,Y)"
     pattern = r"mul\((\d{1,3}),(\d{1,3})\)"
 
-    # Find matching patterns
-    matching = re.findall(pattern, instructions)
+    # Find matching pattern and extract X and Y in a list of tuples
+    matches = re.findall(pattern, instructions)
 
-    return matching
+    # Multiply X and Y for each tuple
+    multiplications = [int(x) * int(y) for x, y in matches]
 
-mul_instructions = find_mul(instructions)
+    # Add up all of the results of the multiplications
+    result = sum(multiplications)
 
-mul_sum = sum([(int(mul[0]) * int(mul[1])) for mul in mul_instructions])
+    return result
+
+
+mul_sum = calculate_mul_sum(instructions)
 
 print("--- Part One ---")
 print(f"Sum of multiplications : {mul_sum}.\n")
 
 # --- Par Two ---
 
-pattern = r"don't\(\)|do\(\)|mul\(\d+,\d+\)"
 
-matches = re.findall(pattern, instructions)
+def calculate_mul_do_sum(instructions: str) -> int:
+    # Set variables
+    do = True
+    result = 0
 
-do = True
-mul_do_instructions = ""
-for match in matches:
-    if match == "do()":
-        do = True
-    elif match == "don't()":
-        do = False
+    # Set pattern to look for : "don't", "do()" and "mul(X,Y)"
+    pattern = r"don't\(\)|do\(\)|mul\(\d+,\d+\)"
 
-    if do and "mul" in match:
-        mul_do_instructions += match
-    
-m2 = find_mul(mul_do_instructions)
-print(m2)
-mul_sum2 = sum([(int(mul[0]) * int(mul[1])) for mul in m2])
+    # Find ans extract matching patterns in a list
+    matches = re.findall(pattern, instructions)
+
+    for match in matches:
+        if match == "do()":
+            do = True
+        elif match == "don't()":
+            do = False
+
+        if do and "mul" in match:
+            x, y = map(int, re.findall(r"\d+", match))
+            multiplication = x * y
+
+            result += multiplication
+
+    return result
+
+
+mul_do_sum = calculate_mul_do_sum(instructions)
 
 print("--- Part Two ---")
-print(f"Sum of do multiplications : {mul_sum2}.\n")
+print(f"Sum of do multiplications : {mul_do_sum}.\n")
