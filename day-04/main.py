@@ -18,6 +18,15 @@ matrix = [list(chars) for chars in input]
 
 
 def calculate_matrix_shape(matrix: list[list]) -> tuple[int, int]:
+    """Calculate shape of a 2D matrix.
+
+    Args:
+        matrix (list[list]): the 2D matrix for which to calculate shape.
+
+    Returns:
+        tuple[int, int]: x length and y length.
+    """
+
     return len(matrix), len(matrix[0])
 
 
@@ -25,6 +34,16 @@ matrix_shape = calculate_matrix_shape(matrix)
 
 
 def check_coordinates_validity(coord: tuple[int, int], shape: tuple[int, int]) -> bool:
+    """Check if given coordinates are in or out a matrix based on its shape.
+
+    Args:
+        coord (tuple[int, int]): coordinates (x, y) to check.
+        shape (tuple[int, int]): shape of the matrix.
+
+    Returns:
+        bool: validity of the coordinate.
+    """
+
     max_x, max_y = shape[0] - 1, shape[1] - 1
 
     if 0 <= coord[0] <= max_x and 0 <= coord[1] <= max_y:
@@ -33,7 +52,17 @@ def check_coordinates_validity(coord: tuple[int, int], shape: tuple[int, int]) -
     return False
 
 
-def find_char_coordinates(char: str, matrix: list[list]) -> tuple[int, int]:
+def find_char_coordinates(char: str, matrix: list[list]) -> list[tuple[int, int]]:
+    """Find the coordinates of a given character inside a characters matrix.
+
+    Args:
+        char (str): character to look for.
+        matrix (list[list]): matrix to look into.
+
+    Returns:
+        list[tuple[int, int]]: all coordinates of the searched character.
+    """
+
     char_coordinates = []
     for r, line in enumerate(matrix):
         for c, line_char in enumerate(line):
@@ -43,6 +72,17 @@ def find_char_coordinates(char: str, matrix: list[list]) -> tuple[int, int]:
 
 
 def find_word(word: str, start: tuple[int, int], direction: tuple[int, int]):
+    """_summary_
+
+    Args:
+        word (str): _description_
+        start (tuple[int, int]): _description_
+        direction (tuple[int, int]): _description_
+
+    Returns:
+        _type_: _description_
+    """
+
     word_char_list = [char for char in word]
 
     for i in range(len(word)):
