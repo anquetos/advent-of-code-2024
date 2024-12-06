@@ -107,3 +107,45 @@ xmas_count = sum(xmas_found)
 
 print("--- Part One ---")
 print(f'Number of "XMAS" : {xmas_count}.\n')
+
+# --- Part One ---
+
+test = "MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX"
+test = test.split()
+test = [list(chars) for chars in test]
+
+a_coordinates = find_char_coordinates("A", test)[0]
+
+print(a_coordinates)
+
+updated_directions = [(1, -1), (-1, -1), (-1, 1), (1, 1)]
+
+test_shape = calculate_matrix_shape(test)
+
+
+def find_x_pattern(word: str, center: tuple[int, int], direction: tuple[int, int]):
+    word_char_list = [char for char in word]
+    print(word_char_list)
+
+    start_1 = (
+        center[0] - 1 * int((len(word) - 1) / 2),
+        center[1] - 1 * int((len(word) - 1) / 2),
+    )
+    start_2 = (
+        center[0] + 1 * int((len(word) - 1) / 2),
+        center[1] + 1 * int((len(word) - 1) / 2),
+    )
+    print(start_1, start_2)
+
+    # coordinates = (center[0] + direction[0] * i, center[1] + direction[1] * i)
+
+    # for i in range(len(word)):
+    #     coordinates = (start[0] + direction[0] * i, start[1] + direction[1] * i)
+    #     if not check_coordinates_validity(coordinates, test_shape):
+    #         return False
+    #     elif word_char_list[i] != matrix[coordinates[0]][coordinates[1]]:
+    #         return False
+    # return True
+
+
+print(find_x_pattern("MAS", a_coordinates, updated_directions))
