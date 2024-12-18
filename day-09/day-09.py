@@ -1,5 +1,4 @@
 from pathlib import Path
-import pprint
 
 
 INPUT_FILENAME = "input.txt"
@@ -11,52 +10,48 @@ with open(q) as f:
     input = f.readlines()
 
 disk_map = input[0].strip()
+disk_map = list(map(int, disk_map))
+
+# disk_map = "2333133121414131402"
+# disk_map = list(map(int, disk_map))
+# print(disk_map)
 
 # --- Part One ---
 
-blocks = ""
+blocks = []
 file_id = 0
-for i, digit in enumerate(disk_map):
-  
-# File
+for i, number in enumerate(disk_map):
+    # File
     if i % 2 == 0:
-        # blocks.append(str(file_id) * int(digit))
-        blocks += str(file_id) * int(digit)
+        blocks.extend([file_id for _ in range(number)])
         file_id += 1
-# Free space
+    # Free space
     else:
-        blocks += "." * int(digit)
+        blocks.extend(["." for _ in range(number)])
 
-blocks_list = list(blocks)
 
-def check_gaps_between_file_blocks(blocks: list) -> bool:
-    nb_space_blocks = blocks.count(".")
-    if blocks[-nb_space_blocks:].count(".") != nb_space_blocks:
+def get_first_space_block(blocks: list) -> int:
+    for i, block in enumerate(blocks):
+        if block == ".":
+            return i
+
+
+def check_remaining_gaps(blocks: list) -> bool:
+    if "." in blocks:
         return True
     return False
 
-def get_last_file_block(blocks: list) -> tuple[int, str]:
-    blocks_length = len(blocks)
-    for i, block in enumerate(blocks[::-1]):
-        if block != ".":
-            idx =  blocks_length -1 - i
-    return idx, block
 
-def get_first_space_block(blocks: list) -> int:
-  for i, block in enumerate(blocks):
-    if block == ".":
-      return i
-    
 remaining_gaps = True
 while remaining_gaps:
-    space_index = get_first_space_block(blocks_list)
-    file_index, file_id = get_last_file_block(blocks_list)
-    blocks_list[space_index] = file_id
-    blocks_list[file_index] = "."
-    
-    remaining_gaps = check_gaps_between_file_blocks(blocks_list)
+    last_block = blocks.pop()
+    remaining_gaps = check_remaining_gaps(blocks)
+    if last_block != ".":
+        first_space_idx = get_first_space_block(blocks)
+        blocks[first_space_idx] = last_block
 
 
+checksum = sum([i * n for i, n in enumerate(blocks)])
 
 print("--- Part One ---")
-print(f"Unique antinode locations : {0}\n")
+print(f"Filesystem checksum : {checksum}\n")
