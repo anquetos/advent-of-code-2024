@@ -26,25 +26,22 @@ def get_trailheads_coordinates(
 trailheads = get_trailheads_coordinates(topographic_map)
 print(f"Trailheads coordinates : {trailheads}\n")
 
-print([i for i in range(1, 10)])
+# print([i for i in range(1, 10)])
 
 # Look for 1 in all directions [(1, 0), (0, 1), (-1, 0), (0, -1)]
 # If find 1, look for two in all directions
 
-def create_generator():
-    start = (4, 2)
-    dir = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-    for d in dir:
-        coord = ((start[0] + d[0]), (start[1]) + d[1])
-        if topographic_map[coord[0]][coord[1]] == 1:
-            # print(coord)
-            # print(topographic_map[coord[1]][coord[0]])
-            yield coord
+directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
-gen = create_generator()
+x, y = trailheads[2]
+print("Test", x, y)
 
-for i in gen:
-    print(i)
+value = 0
+for dx, dy in directions:
+    nx, ny = (x + dx, y + dy)
+    if topographic_map[ny][nx] == value + 1:
+        pass
+        # save coord
 
 # --- Part One ---
 
