@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 INPUT_FILENAME = "input.txt"
 p = Path(__file__).parent.resolve()
 q = p / INPUT_FILENAME
@@ -10,6 +9,8 @@ with open(q) as f:
     lines = f.readlines()
 
 topographic_map = [list(map(int, line.strip())) for line in lines]
+
+# --- Part One ---
 
 
 def check_coordinates_validity(
@@ -80,7 +81,48 @@ for trailhead in trailheads:
 
     scores_sum += len(positions)
 
-# --- Part One ---
-
 print("--- Part One ---")
 print(f"Sum of the scores of all trailheads : {scores_sum}\n")
+
+# --- Part Two ---
+
+
+def get_valid_step_positions_ratings(
+    matrix: list[list[int]],
+    current_positions: list[tuple[int, int]],
+    current_height: int,
+) -> list[tuple[int, int]]:
+    valid_step_positions = []
+
+    for current_position in current_positions:
+        cx, cy = current_position
+
+        directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+        for dx, dy in directions:
+            nx, ny = cx + dx, cy + dy
+            next_height = get_position_height(matrix, (nx, ny))
+
+            if (
+                check_coordinates_validity(matrix, (nx, ny))
+                and next_height is not None
+                and (next_height - current_height == 1)
+            ):
+                valid_step_positions.append((nx, ny))
+
+    return valid_step_positions
+
+
+ratings_sum = 0
+for trailhead in trailheads:
+    positions = [trailhead]
+
+    for height in range(9):
+        valid_steps = get_valid_step_positions_ratings(
+            topographic_map, positions, height
+        )
+        positions = valid_steps
+
+    ratings_sum += len(positions)
+
+print("--- Part Two ---")
+print(f"Sum of the ratings of all trailheads : {ratings_sum}\n")
